@@ -563,7 +563,7 @@ function follow() {
   if (phase === 'inward' && f >= last - 1.5) {
     phase = 'rest'; progress = last; bloomStart = performance.now(); pointer = null;
     waveStart = performance.now();
-    hintEl.textContent = 'Your breath has arrived at the center. Rest here and observe. Tap the labyrinth when you are ready to return.';
+    hintEl.textContent = 'Your breath has arrived at the center. Rest here and observe. When you are ready, trace your path back out.';
     expandingNote();
   } else if (phase === 'outward' && f <= 1.5) {
     // Seamless loop: ready to walk straight back in.
@@ -603,9 +603,10 @@ function loop() {
 canvas.addEventListener('pointerdown', e => {
   initAudio();
   if (phase === 'rest') {
+    // Seamless: touching the labyrinth at center rest flows straight
+    // into the outward walk - no separate tap needed.
     phase = 'outward';
     hintEl.textContent = 'Let your breath guide your finger back to where you started.';
-    return;
   }
   pointer = [e.offsetX * devicePixelRatio, e.offsetY * devicePixelRatio];
 });
