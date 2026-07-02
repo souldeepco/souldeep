@@ -371,7 +371,7 @@ function initAudio() {
   catch (e) { return; }
   master = AC.createGain(); master.gain.value = 0;
   filter = AC.createBiquadFilter();
-  filter.type = 'lowpass'; filter.frequency.value = 1200; filter.Q.value = 0.3;
+  filter.type = 'lowpass'; filter.frequency.value = 1500; filter.Q.value = 0.3;
   const dryG = AC.createGain(); dryG.gain.value = 0.5;
   const reverb = AC.createConvolver();
   reverb.buffer = makeReverbIR(AC, 3.6, 2.2);
@@ -388,7 +388,7 @@ function initAudio() {
   air.buffer = airBuf; air.loop = true;
   const airLP = AC.createBiquadFilter();
   airLP.type = 'lowpass'; airLP.frequency.value = 650;
-  const airG = AC.createGain(); airG.gain.value = 0.010;
+  const airG = AC.createGain(); airG.gain.value = 0.018;
   air.connect(airLP); airLP.connect(airG); airG.connect(master);
   air.start();
   master.gain.linearRampToValueAtTime(0.9, AC.currentTime + 2.5);
@@ -412,7 +412,7 @@ function playChord(freqs) {
       o.type = 'sine'; o.frequency.value = f; o.detune.value = det;
       o2.type = 'sine'; o2.frequency.value = f * 2; o2.detune.value = det;
       gn2.gain.value = 0.22;
-      const v = 0.028 / Math.pow(ni + 1, 0.4);
+      const v = 0.058 / Math.pow(ni + 1, 0.4);
       gn.gain.setValueAtTime(0.0001, t);
       gn.gain.linearRampToValueAtTime(v, t + 6.0);
       gn.gain.setValueAtTime(v, t + CHORD_SECS);
@@ -445,7 +445,7 @@ function expandingNote() {
   for (const [f, amp, delay] of parts) {
     const o = AC.createOscillator(), gn = AC.createGain();
     o.type = 'sine'; o.frequency.value = f;
-    const v = amp * 0.12;
+    const v = amp * 0.22;
     gn.gain.setValueAtTime(0.0001, t + delay);
     gn.gain.linearRampToValueAtTime(v, t + delay + 3.0);
     gn.gain.setValueAtTime(v, t + delay + 3.8);
@@ -589,7 +589,7 @@ function loop() {
   }
   if (AC && filter && audioOn) {
     const frac = disp / (cur.points.length - 1);
-    filter.frequency.value = 1250 - 450 * frac;
+    filter.frequency.value = 1550 - 450 * frac;
   }
   let wave = -1;
   if (waveStart > 0) {
